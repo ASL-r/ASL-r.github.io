@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>部署MetaAgentVerse服务</title>
+        <title>MetaAgentVerse 安装</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -176,7 +176,7 @@
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="#">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/database.html">数据库</a></li>
     <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
@@ -201,7 +201,7 @@
   <p class="caption" role="heading"><span class="caption-text">分布式服务简单配置</span></p>
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../distributed_service/config.html">配置文件</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="#">部署MetaAgentVerse服务</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/set_server.html">部署MetaAgentVerse服务</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../distributed_service/run_case.html">本地运行Case</a></li>
   <!-- <li class="toctree-l1 has-children"><a class="reference internal" href="use_cases/q_and_a/root.html">IOA Paper Writing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul> -->
   <!-- <li class="toctree-l2"><a class="reference internal" href="use_cases/q_and_a/rag_cli.html">IOT Party</a></li> -->
@@ -240,57 +240,57 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="installation">
-<h2>部署MetaAgentVerse服务<a class="headerlink" href="#set_server" title="Permalink to this heading">#</a></h2>
 
-<p>首先进入服务器</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">ssh</span> <span class="n">username@ip_address</span>
-</pre></div>
+<div class="section" id="code_structure">
+    <h2>💻 代码结构<a class="headerlink" href="#code_structure" title="Permalink to this heading">#</a></h2>
+    <ul class="arabic simple">
+      <li><p><code class="docutils literal notranslate">im_client/agents</code>: 存放不同tool agent的接入代码，目前支持ReAct Agent <code class="docutils literal notranslate">im_client/agents/react</code>、OpenAI Assistant <code class="docutils literal notranslate">im_client/agents/openai_assistant</code>、Open Interpreter <code class="docutils literal notranslate">im_client/agents/open_interpreter</code>。对于如何新接入一个agent，可见<a class="reference internal" href="customize/agent.html">自定义Tool Agent</a>的描述。</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/communication</code>: Communication Layer的具体实现。 <code class="docutils literal notranslate">communication_layer.py</code>、实现了主要逻辑， <code class="docutils literal notranslate">main.py</code>是启动入口，<code class="docutils literal notranslate">task_management.py</code>维护当前群聊中所有正在进行/已完成的任务状态（会作为prompt里的内容给到agent里）。</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/server</code>: 中心服务器的实现，包括agent registry、session manager等。</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/config</code>: 存储了一些agent的config文件，在docker-compose进行整个系统启动时，会读取docker-compose配置中指定的config，之后会提到。另外，这个文件夹的tools文件夹里存着一些描述tool的yaml。</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/tools</code>: 包含一些工具的具体实现，他们的描述被存在上面说的这个<code class="docutils literal notranslate">im_client/config/tools</code>里。</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/llms</code>: 目前只实现了openai的接口，也就是communicative agent的LLM暂时只支持openai模型。</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/memory</code>: 目前基本还是只用的最简单的列表memory，就是把所有消息原封不动地存下来。</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/prompts</code>: 存储几乎框架中所有用到的prompt</p></li>
+    
+      <li><p><code class="docutils literal notranslate">im_client/types</code>: 框架中用到的一些数据类型，用pydantic来进行类型标注，比如任务的描述、任务的状态等</p></li>
+      <li><p><code class="docutils literal notranslate">dockerfiles</code>: 存放了所有的dockerfile，用于构建agent的docker镜像和启动整个系统的docker-compose</p></li>
+    </ul>
+    <p>其他没提到的文件/文件夹详情可见<strong><a class="reference external" href="https://github.com/OpenBMB/AgentVerse">AgentVerse</a></strong>。</p>
+
+
+
 </div>
-<p>创建一个文件夹，将MetaAgentVerse clone到文件中，</p>
-
-<div class="highlight"><pre><span></span><span></span><span class="kn">cd</span> <span class="n">/data</span> 
-<span></span><span class="kn">mkdir</span> <span class="n">your_file_name</span>
-<span class="kn">cd</span> <span class="n">/data/your_file_name</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">https://github.com/AgentVerse/MetaAgentVerse.git</span>
-</pre></div>
-
-<p>拉取IOT case中IOT Server所需要用到的image，</p>
-<div class="highlight"><pre><span></span><span></span><span class="kn">docker</span> <span class="n">pull mlmz/iot:latest</span> 
-</pre></div>
-
-<p>在<code class="docutils literal notranslate">dockerfiles/compose</code>目录下的<code class="docutils literal notranslate">server.yml</code>包含了MetaAgentVerse Server和IOT Server。通过docker-compose命令在服务端启动。</p>
-<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f</span> <span class="n">dockerfiles/composeserver.yml</span> <span class="n">up</span> <span class="n">--build</span>
-</pre></div>
-
-<div class="admonition tip">
-    <p class="admonition-title">Tip</p>
-    <p>如果需要想要部署其他server，可自行修改server.yml。</p>
-</div>
-
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../distributed_service/run_case.html">
+          <a class="next-page" href="../high_level_concepts/customize_tool_agent.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">本地运行Case</div>
+                <div class="title">自定义Tool Agent</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../distributed_service/config.html">
+          <a class="prev-page" href="../high_level_concepts/mechanism.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">配置文件</div>
+                <div class="title">机制设计</div>
                 
               </div>
             </a>
@@ -312,7 +312,28 @@
         
       </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+        
+<ul>
+<a class="reference internal" href="#code_structure">💻 代码结构</a>
+</ul>
 
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
   </div>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>

@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>部署MetaAgentVerse服务</title>
+        <title>Framework</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -174,7 +174,7 @@
   <p class="toctree-l1"><a class="reference internal"  href="../index.html"><strong>Home</strong></a></p>
   <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="#">框架理念</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
@@ -201,7 +201,7 @@
   <p class="caption" role="heading"><span class="caption-text">分布式服务简单配置</span></p>
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../distributed_service/config.html">配置文件</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="#">部署MetaAgentVerse服务</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/set_server.html">部署MetaAgentVerse服务</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../distributed_service/run_case.html">本地运行Case</a></li>
   <!-- <li class="toctree-l1 has-children"><a class="reference internal" href="use_cases/q_and_a/root.html">IOA Paper Writing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul> -->
   <!-- <li class="toctree-l2"><a class="reference internal" href="use_cases/q_and_a/rag_cli.html">IOT Party</a></li> -->
@@ -240,57 +240,56 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="installation">
-<h2>部署MetaAgentVerse服务<a class="headerlink" href="#set_server" title="Permalink to this heading">#</a></h2>
+          <div class="section" id="framework">
+<h2>框架理念<a class="headerlink" href="#framework" title="Permalink to this heading">#</a></h2>
+<div class="section" id="why_design_framework">
+    <h3>🚀 为什么会设计这个框架<a class="headerlink" href="#why_design_framework" title="Permalink to this heading">#</a></h3>
+    <p>目前大部分的agent在设计之初并不考虑multi-agent合作的情况，我们将现有的agent称为Tool Agent，因为他们更像是作为一个智能的tool完成某一个给定的任务。为了使这些不同的Tool Agent可以进行沟通，我们定义了一个Communication Layer将Tool Agent包裹起来，并将这整个看作一个<strong>Communicative Agent</strong> <code class="docutils literal notranslate">im_client/communication/communication_layer.py</code>，结构大体如下: </p>
+    <p><img alt="" src="../image.png" /></p>
+    <p><strong>Communication Layer</strong>中，包含几个重要的组件: </p>
+    <ul class="arabic simple">
+    <li><p><strong>LLM</strong>: 用于跟外界（其他agent等）进行沟通，同时也会给自己的Tool Agent分配任务（这个LLM可以和Tool Agent的LLM不一样，比如我们可以用基于GPT-3.5的OpenAI Assistant作为Tool Agent，但用GPT-4作为Communication Layer的LLM）</p></li>
+    <li><p><strong>Conversation Memory</strong>: 存储了Communicative Agent与其他Agent的沟通记录，包括任务的目标、聊天过程、结果等。因为我们希望Agent不是一个启动一次就结束的程序，而是一个可以持续的实体，所以Conversation Memory应该是一个数据库(截止至2024.2.3写文档时还未完全支持)，存储了历史所有任务的所有聊天记录。</p></li>
+    <li><p><strong>Agent Notebook</strong> (代码里应该叫agent_contact): 存储了之前所有与该agent合作过的agent信息，以及从之前合作过程中得出的对其他agent的评价，方便以后该agent找队友时进行参考。(截止至2024.2.3写文档时还未完全支持)</p></li>
+    <li><p><strong>Tool Agent</strong>:  就是不同的agent，可以是OpenAI Assistant、ReAct agent、Open Interpreter等第三方agent，他们只负责去完成Communication Layer里的LLM给他们分配的任务，不会参与到实际的与其他agent交互的过程中。</p></li>
+    </ul>
+    
+<div class="section" id="server">
+  <h3>Server<a class="headerlink" href="#server" title="Permalink to this heading">#</a></h3>
+    <p>为了使不同的Communicative Agent可以协同完成任务，我们需要一个中心服务器，这个服务器的功能包括: </p>
+    <ul class="arabic simple">
+    <li><p><strong>Agent Registry</strong>: 记录了所有接入MetaAgentVerse的agent的信息，包括agent的描述，agent的能力等。所有agent在启动的时候都应该以规定方式向这个服务器注册自己。同时支持根据agent的特征进行查找并返回合适的agent。</p></li>
+    <li><p><strong>Session Manager</strong>: 记录了所有正在进行的任务的信息，包括任务的目标、任务的参与者、任务的状态等。有点像是微信里的一个群聊，只不过这个群聊是由不同的agent组成的。接收到一个agent发送了消息到某个群里的话，就会自动把消息转发给这个群里其他agent。</p></li>
+    </ul>
+    </ul>
+    </div>
+    </div>
 
-<p>首先进入服务器</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">ssh</span> <span class="n">username@ip_address</span>
-</pre></div>
+
 </div>
-<p>创建一个文件夹，将MetaAgentVerse clone到文件中，</p>
-
-<div class="highlight"><pre><span></span><span></span><span class="kn">cd</span> <span class="n">/data</span> 
-<span></span><span class="kn">mkdir</span> <span class="n">your_file_name</span>
-<span class="kn">cd</span> <span class="n">/data/your_file_name</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">https://github.com/AgentVerse/MetaAgentVerse.git</span>
-</pre></div>
-
-<p>拉取IOT case中IOT Server所需要用到的image，</p>
-<div class="highlight"><pre><span></span><span></span><span class="kn">docker</span> <span class="n">pull mlmz/iot:latest</span> 
-</pre></div>
-
-<p>在<code class="docutils literal notranslate">dockerfiles/compose</code>目录下的<code class="docutils literal notranslate">server.yml</code>包含了MetaAgentVerse Server和IOT Server。通过docker-compose命令在服务端启动。</p>
-<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f</span> <span class="n">dockerfiles/composeserver.yml</span> <span class="n">up</span> <span class="n">--build</span>
-</pre></div>
-
-<div class="admonition tip">
-    <p class="admonition-title">Tip</p>
-    <p>如果需要想要部署其他server，可自行修改server.yml。</p>
-</div>
-
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../distributed_service/run_case.html">
+          <a class="next-page" href="../high_level_concepts/mechanism.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">本地运行Case</div>
+                <div class="title">机制设计</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../distributed_service/config.html">
+          <a class="prev-page" href="../index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">配置文件</div>
+                <div class="title">Home</div>
                 
               </div>
             </a>
@@ -312,7 +311,36 @@
         
       </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">框架理念</a><ul>
+<li><a class="reference internal" href="#why_design_framework">🚀 为什么会设计这个框架</a></li>
+<li><a class="reference internal" href="#server">Server</a></li>
 
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
   </div>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>

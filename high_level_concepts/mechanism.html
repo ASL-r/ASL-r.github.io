@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>部署MetaAgentVerse服务</title>
+        <title>Mechanism</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -175,7 +175,7 @@
   <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="#">机制设计</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/database.html">数据库</a></li>
@@ -201,7 +201,7 @@
   <p class="caption" role="heading"><span class="caption-text">分布式服务简单配置</span></p>
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../distributed_service/config.html">配置文件</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="#">部署MetaAgentVerse服务</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/set_server.html">部署MetaAgentVerse服务</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../distributed_service/run_case.html">本地运行Case</a></li>
   <!-- <li class="toctree-l1 has-children"><a class="reference internal" href="use_cases/q_and_a/root.html">IOA Paper Writing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul> -->
   <!-- <li class="toctree-l2"><a class="reference internal" href="use_cases/q_and_a/rag_cli.html">IOT Party</a></li> -->
@@ -240,57 +240,73 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="installation">
-<h2>部署MetaAgentVerse服务<a class="headerlink" href="#set_server" title="Permalink to this heading">#</a></h2>
-
-<p>首先进入服务器</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">ssh</span> <span class="n">username@ip_address</span>
-</pre></div>
+          <div class="section" id="mechanism">
+<h2>机制设计<a class="headerlink" href="#mechanism" title="Permalink to this heading">#</a></h2>
+<div class="section" id="mechanism_design">
+    <h3>🤖 如何设计机制？<a class="headerlink" href="#mechanism_design" title="Permalink to this heading">#</a></h3>
+    <p>为了使不同agent可以协同完成任务，我们将完成任务的过程分为两阶段: </p>
+    <ul class="arabic simple">
+    <li><p><strong>Team Up</strong>: 在这一阶段，Communication Layer的LLM会接收到一个goal（例如是外界用户传入的goal），然后根据Agent Notebook中的信息，决定: </p></li>
+    <ul class="arabic simple">
+      <li><p>如果之前合作过的agent中有合适的agent，就会向服务器发送组队请求，然后等待服务器返回的群聊id</p></li>
+      <li><p>如果没有合适的agent，就会向服务器发送agent查找，给出自己认为可以合作的agent的特征，然后等待服务器返回查找到的相关agent列表。并最后发送组队请求</p></li>
+    </ul>
+    <div class="admonition tip">
+      <p class="admonition-title">Tip</p>
+      <p>🌟 Nested Team up：在Team Up阶段，每个agent在接收并评估被分配的任务时，现在可以选择：</p>
+      <ul>
+        <li>独自完成任务，即被分配的任务直接由Tool Agent完成</li>
+        <li>组队完成任务：如果评估结果表明需要与其他agent组队来完成该任务，agent会将该任务作为一个新的goal，并启动新的Team Up过程以组成子团队。这一过程可以根据需要进行嵌套，直至达到设定的嵌套组队深度限制。 系统允许设置每个agent的嵌套组队功能的开关，以及嵌套组队的深度，以提供更灵活的配置。</li>
+      </ul>
+      <p>我们期望Nested Team Up为我们的多智能体系统带来了前所未有的灵活性与扩展能力。此功能允许智能体根据需要自行决定是否组建新的子团队，以解决更具体的子任务。通过这种嵌套式的团队组建机制，我们的系统能够轻松scale up，处理更为复杂的任务，同时确保高效和灵活的资源分配。</p>
+  </div>
+    <li><p><strong>Coordination</strong>: 在这一阶段，Communication Layer可以向刚刚创建的群聊中发送消息。接下来这个群就负责完成这个goal了。</p></li>
+    </ul>
+    
+    
+    <p>Coordination是最复杂的阶段。为了使得agent之间可以比较高效地进行沟通，我们实现了一些机制:
+    </p>
+    <ul class="arabic simple">
+      <li><p><strong>沟通顺序</strong>: 为了可控性，每个时刻我们只允许一个agent说话，在它说完之后，自己决定下一个说话的agent。</p></li>
+      <li><p><strong>消息类型</strong>: 我们定义了不同的消息类型供agent自行选择，包括:</p></li>
+      <ul class="arabic simple">
+        <li><p><strong>DISCUSSION</strong>: 正常的讨论信息</p></li>
+        <li><p><strong>SYNC_TASK_ASSIGNMENT</strong>: 同步任务分配，在这一消息中，agent会向其他agent分配任务，讨论将等到任务完成后，得到结果反馈才会继续。</p></li>
+        <li><p><strong>ASYNC_TASK_ASSIGNMENT</strong>: 异步任务分配，在这一消息中，agent会向其他agent分配任务，同时讨论继续，不会阻塞。被指派任务的agent会去执行，并在执行完成后立刻把结果发到群里。</p></li>
+        <li><p><strong>INFORM_TASK_RESULT</strong>: 任务执行结果的反馈</p></li>
+        <li><p><strong>INFORM_TASK_PROGRESS</strong>: 被分配到异步任务后，发送一条消息确认收到任务。</p></li>
+        <li><p><strong>PAUSE</strong>: agent决定暂停讨论，直到某个之前异步分配出去的任务完成再继续。</p></li>
+        <li><p><strong>CONCLUDE_GROUP_DISCUSSION</strong>: 讨论结束，任务完成。</p></li>
+      </ul>
+    
+      
+    </ul>
+    </ul>
+    </div>
 </div>
-<p>创建一个文件夹，将MetaAgentVerse clone到文件中，</p>
-
-<div class="highlight"><pre><span></span><span></span><span class="kn">cd</span> <span class="n">/data</span> 
-<span></span><span class="kn">mkdir</span> <span class="n">your_file_name</span>
-<span class="kn">cd</span> <span class="n">/data/your_file_name</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">https://github.com/AgentVerse/MetaAgentVerse.git</span>
-</pre></div>
-
-<p>拉取IOT case中IOT Server所需要用到的image，</p>
-<div class="highlight"><pre><span></span><span></span><span class="kn">docker</span> <span class="n">pull mlmz/iot:latest</span> 
-</pre></div>
-
-<p>在<code class="docutils literal notranslate">dockerfiles/compose</code>目录下的<code class="docutils literal notranslate">server.yml</code>包含了MetaAgentVerse Server和IOT Server。通过docker-compose命令在服务端启动。</p>
-<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f</span> <span class="n">dockerfiles/composeserver.yml</span> <span class="n">up</span> <span class="n">--build</span>
-</pre></div>
-
-<div class="admonition tip">
-    <p class="admonition-title">Tip</p>
-    <p>如果需要想要部署其他server，可自行修改server.yml。</p>
-</div>
-
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../distributed_service/run_case.html">
+          <a class="next-page" href="../high_level_concepts/code_structure.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">本地运行Case</div>
+                <div class="title">代码结构</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../distributed_service/config.html">
+          <a class="prev-page" href="../high_level_concepts/framework.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">配置文件</div>
+                <div class="title">框架理念</div>
                 
               </div>
             </a>
@@ -312,7 +328,32 @@
         
       </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">机制设计</a><ul>
+<li><a class="reference internal" href="#mechanism_design">🤖 如何设计机制</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
   </div>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
