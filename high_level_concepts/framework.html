@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>IOT Daily Life</title>
+        <title>Framework</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -174,7 +174,7 @@
   <p class="toctree-l1"><a class="reference internal"  href="../index.html"><strong>Home</strong></a></p>
   <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="#">框架理念</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
@@ -189,7 +189,7 @@
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../case/IOA.html">IOA Paper Writing</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../case/IOT_1.html">IOT Party</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="#">IOT Daily Life</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../case/IOT_2.html">IOT Daily Life</a></li>
   
   <p class="caption" role="heading"><span class="caption-text">自定义Agent</span></p>
   <ul>
@@ -240,43 +240,34 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="iot_daily_life">
-<h2>IOT Daily Life<a class="headerlink" href="#IOT_daily_life" title="Permalink to this heading">#</a></h2>
+          <div class="section" id="framework">
+<h2>框架理念<a class="headerlink" href="#framework" title="Permalink to this heading">#</a></h2>
 <br></br>
-<p>IOT Daily: 在IOT Daily场景中，有5个agent组队进行沟通协作应对传感器发生的变化，这五个agent分别是SensorChecker, CatererAssistant, EntertainmentAssistant, EnvironmentAssistant, DrinkerAssistant, 其中CatererAssistant, EntertainmentAssistant, EnvironmentAssistant, DrinkerAssistant 是四个基于ReAct agent的communication layer去使用不同的智能体以完成对于传感器变化的应对。以下是如何启动并使用。</p>
 
-<div class="section" id="run_IOT">
-<h3>Docker 运行<a class="headerlink" href="#run_IOT" title="Permalink to this heading">#</a></h3>
-<p>首先创建ReAct Agent镜像，其中http_proxy是optional，是为了在构建docker容器时使用你的本机代理，因为有一些需要翻墙下载的包。如果你的电脑上用的不是clash，需要把7890端口换成你代理软件的端口。如果你已经在外网，把这个参数删掉。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">docker</span> <span class="n">build</span> <span class="n">-f</span><span> </span><span class="n">dockerfiles/tool_agents/react.Dockerfile</span><span> </span><span>--build-arg</span> <span>http_proxy=http://host.docker.internal:7890</span> <span>--build-arg</span> <span>https_proxy=http://host.docker.internal:7890</span> <span class="o">-</span><span class="n">t</span> <span class="n">react:latest</span> <span class="o">.</span> 
-</pre></div>
-</div>
-<p>然后通过docker-compose创建并运行7个container，其中包含server，iot- server，五个参与群聊的agent，以及catering_react_agent，drink_react_agent，entertainment_react_agent，environment_react_agent。</p>
-
-<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f</span> <span class="n">dockerfiles/compose/IOT_Party.yml</span> <span class="n">up</span> <span class="n">--build</span>
-</pre></div>
-
-<p>启动之后，SensorChecker会去轮询地检查所有的传感器是否有检测到变化，对于这个目前的仿真情况，在启动IOT-Server的同一台机器上，可以使用如下Python脚本完成人为的传感器值的修改。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="vi">from</span> <span class="nn">miio</span> <span class="vi">import</span> <span class="n">DeviceFactory</span> 
-<span class="vi">from</span> <span class="nn">typing</span> <span class="vi">import</span> <span class="n">Dict</span> 
-
-<span class="os"># 此处创建一个客户端</span>
-<span class="n">dev =</span> <span class="n">DeviceFactory.create(</span><span class="vm">"127.0.0.0.1"</span><span class="o">,</span> <span class="vm">"00000000000000000000000000000000"</span></span><span class="o">)</span>
-<span class="os"># 此处修改temperature-humidity-sensor的温度为0</span>
-<span class="n">dev.send(</span> 
-    <span class="n">command=</span><span class="vm">"temperature-humidity-sensor.set_properties"</span><span class="o">,</span>
-    <span class="n">parameters=</span><span class="o">[{</span><span class="vm">"did"</span><span class="o">:</span> <span class="vm">".."</span><span class="o">,</span> <span class="vm">"siid"</span><span class="o">:</span> <span class="n">2</span><span class="o">,</span> <span class="vm">"piid"</span><span class="o">:</span> <span class="n">1</span><span class="o">,</span> </span> <span class="vm">"value"</span><span class="o">:</span> <span class="n">0</span><span class="o">}]</span><span class="o">,</span>
-<span class="o">)</span>
-<span class="os"># 此处修改temperature-humidity-sensor的温度为0</span>
-<span class="n">dev.send(</span> 
-    <span class="n">command=</span><span class="vm">"illumination-sensor.set_properties"</span><span class="o">,</span>
-    <span class="n">parameters=</span><span class="o">[{</span><span class="vm">"did"</span><span class="o">:</span> <span class="vm">".."</span><span class="o">,</span> <span class="vm">"siid"</span><span class="o">:</span> <span class="n">2</span><span class="o">,</span> <span class="vm">"piid"</span><span class="o">:</span> <span class="n">1</span><span class="o">,</span> </span> <span class="vm">"value"</span><span class="o">:</span> <span class="n">0</span><span class="o">}]</span><span class="o">,</span>
-<span class="o">)</span>
-</pre></div>
-</div>
+<div class="section" id="why_design_framework">
+    <h3>🚀 为什么会设计这个框架<a class="headerlink" href="#why_design_framework" title="Permalink to this heading">#</a></h3>
+    <p>目前大部分的agent在设计之初并不考虑multi-agent合作的情况，我们将现有的agent称为Tool Agent，因为他们更像是作为一个智能的tool完成某一个给定的任务。为了使这些不同的Tool Agent可以进行沟通，我们定义了一个Communication Layer将Tool Agent包裹起来，并将这整个看作一个<strong>Communicative Agent</strong> <code class="docutils literal notranslate">im_client/communication/communication_layer.py</code>，结构大体如下: </p>
+    <p><img alt="" src="../image.png" /></p>
+    <p><strong>Communication Layer</strong>中，包含几个重要的组件: </p>
+    <ul class="arabic simple">
+    <li><p><strong>LLM</strong>: 用于跟外界（其他agent等）进行沟通，同时也会给自己的Tool Agent分配任务（这个LLM可以和Tool Agent的LLM不一样，比如我们可以用基于GPT-3.5的OpenAI Assistant作为Tool Agent，但用GPT-4作为Communication Layer的LLM）</p></li>
+    <li><p><strong>Conversation Memory</strong>: 存储了Communicative Agent与其他Agent的沟通记录，包括任务的目标、聊天过程、结果等。因为我们希望Agent不是一个启动一次就结束的程序，而是一个可以持续的实体，所以Conversation Memory应该是一个数据库(截止至2024.2.3写文档时还未完全支持)，存储了历史所有任务的所有聊天记录。</p></li>
+    <li><p><strong>Agent Notebook</strong> (代码里应该叫agent_contact): 存储了之前所有与该agent合作过的agent信息，以及从之前合作过程中得出的对其他agent的评价，方便以后该agent找队友时进行参考。(截止至2024.2.3写文档时还未完全支持)</p></li>
+    <li><p><strong>Tool Agent</strong>:  就是不同的agent，可以是OpenAI Assistant、ReAct agent、Open Interpreter等第三方agent，他们只负责去完成Communication Layer里的LLM给他们分配的任务，不会参与到实际的与其他agent交互的过程中。</p></li>
+    </ul>
+    
+<div class="section" id="server">
+  <h3>Server<a class="headerlink" href="#server" title="Permalink to this heading">#</a></h3>
+    <p>为了使不同的Communicative Agent可以协同完成任务，我们需要一个中心服务器，这个服务器的功能包括: </p>
+    <ul class="arabic simple">
+    <li><p><strong>Agent Registry</strong>: 记录了所有接入AgentVerse-IM的agent的信息，包括agent的描述，agent的能力等。所有agent在启动的时候都应该以规定方式向这个服务器注册自己。同时支持根据agent的特征进行查找并返回合适的agent。</p></li>
+    <li><p><strong>Session Manager</strong>: 记录了所有正在进行的任务的信息，包括任务的目标、任务的参与者、任务的状态等。有点像是微信里的一个群聊，只不过这个群聊是由不同的agent组成的。接收到一个agent发送了消息到某个群里的话，就会自动把消息转发给这个群里其他agent。</p></li>
+    </ul>
+    </ul>
+    </div>
+    </div>
 
 
-</div>
 </div>
 
         </article>
@@ -284,23 +275,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../customize/agent.html">
+          <a class="next-page" href="../high_level_concepts/mechanism.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Agent</div>
+                <div class="title">机制设计</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../case/IOT_1.html">
+          <a class="prev-page" href="../index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">IOT Party</div>
+                <div class="title">Home</div>
                 
               </div>
             </a>
@@ -334,11 +325,14 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">IOA Paper Writing</a><ul>
-<li><a class="reference internal" href="#run_IOT">Docker 运行</a><ul>
+<li><a class="reference internal" href="#">框架理念</a><ul>
+<li><a class="reference internal" href="#why_design_framework">🚀 为什么会设计这个框架</a></li>
+<li><a class="reference internal" href="#server">Server</a></li>
+
 </ul>
 </li>
-
+</ul>
+</li>
 </ul>
 </li>
 </ul>

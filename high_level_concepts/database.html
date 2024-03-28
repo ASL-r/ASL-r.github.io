@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>IOT Daily Life</title>
+        <title>Database</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -178,7 +178,7 @@
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/database.html">数据库</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="#">数据库</a></li>
     <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
   <ul>
     <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">AgentVerse-IM安装</a></li>
@@ -189,7 +189,7 @@
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../case/IOA.html">IOA Paper Writing</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../case/IOT_1.html">IOT Party</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="#">IOT Daily Life</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../case/IOT_2.html">IOT Daily Life</a></li>
   
   <p class="caption" role="heading"><span class="caption-text">自定义Agent</span></p>
   <ul>
@@ -240,42 +240,70 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="iot_daily_life">
-<h2>IOT Daily Life<a class="headerlink" href="#IOT_daily_life" title="Permalink to this heading">#</a></h2>
+          <div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this heading">#</a></h2>
 <br></br>
-<p>IOT Daily: 在IOT Daily场景中，有5个agent组队进行沟通协作应对传感器发生的变化，这五个agent分别是SensorChecker, CatererAssistant, EntertainmentAssistant, EnvironmentAssistant, DrinkerAssistant, 其中CatererAssistant, EntertainmentAssistant, EnvironmentAssistant, DrinkerAssistant 是四个基于ReAct agent的communication layer去使用不同的智能体以完成对于传感器变化的应对。以下是如何启动并使用。</p>
 
-<div class="section" id="run_IOT">
-<h3>Docker 运行<a class="headerlink" href="#run_IOT" title="Permalink to this heading">#</a></h3>
-<p>首先创建ReAct Agent镜像，其中http_proxy是optional，是为了在构建docker容器时使用你的本机代理，因为有一些需要翻墙下载的包。如果你的电脑上用的不是clash，需要把7890端口换成你代理软件的端口。如果你已经在外网，把这个参数删掉。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">docker</span> <span class="n">build</span> <span class="n">-f</span><span> </span><span class="n">dockerfiles/tool_agents/react.Dockerfile</span><span> </span><span>--build-arg</span> <span>http_proxy=http://host.docker.internal:7890</span> <span>--build-arg</span> <span>https_proxy=http://host.docker.internal:7890</span> <span class="o">-</span><span class="n">t</span> <span class="n">react:latest</span> <span class="o">.</span> 
+<div class="section" id="milvus">
+<h3>Milvus向量数据库<a class="headerlink" href="#milvus" title="Permalink to this heading">#</a></h3>
+<p>Milvus相关的封装在<code class="docutils literal notranslate">common/utils/milvus_utils.py</code>中，继承了pymilvus中的Collection类。</p>
+<ol>
+  <li>ConfigMilvusWrapper支持用yaml文件配置表的字段，配置文件在<code class="docutils literal notranslate">im_client/configs/vecdb</code>中, eg: <code class="docutils literal notranslate">agent_contact.yaml</code>。
+    <p>当两个Milvus Collection的name和using字段相同时，会连接到同一张表。可以通过name_modify和connection_modify参数修改name和using.</p>
+  </li>
+<li>插入/删除数据
+<div class="highlight"><pre><span></span><span class="n">example = ConfigMilvusWrapper(</span><span class="vm">'example.yaml'</span><span class="n">)</span>
+<span class="os"># example: key | name | desc</span>
+<span></span><span class="n">example[</span><span class="vm">'A'</span><span class="n">] = {</span><span class="vm">'name'</span><span class="n">:</span> </span><span class="vm">'Alice'</span></span><span class="n">,</span> </span><span class="vm">'desc'</span><span class="n">:</span> </span><span class="vm">'Alice is ...'</span><span class="n">}</span>
+
+<span></span><span class="n">example[</span><span class="vm">'A'</span><span class="n">] = <</span><span class="n">ClassName>（</span><span class="vm">'name'</span><span class="n">=</span> </span><span class="vm">'Alice'</span></span><span class="n">,</span> </span><span class="vm">'desc'</span><span class="n">=</span> </span><span class="vm">'Alice is ...'</span><span class="n">)</span>
+
+<span></span><span class="n">example.upsert_data({</span><span class="vm">'key'</span><span class="n">:</span><span class="vm">'A'</span><span class="n">,</span> </span><span class="vm">'name'</span></span><span class="n">:</span> </span><span class="vm">'Alice'</span><span class="n">,</span> </span><span class="vm">'desc'</span> <span class="vm">'Alice is ...'</span><span class="n">})</span>
+
+<span></span><span class="n">example.remove(<</span><span class="n">key>)</span><span class="os"># 删除主键为< </span><span class="os">key>的entity</span>
 </pre></div>
+<p>上面三种都会向向量数据库插入一条 key | name | desc 的数据。如果设置desc的auto_vectorize为True, 会同时插入desc_vec数据，为向量化后的desc_vec。</p>
+</li>
+
+<li>建立索引
+  <p>在进行ANN查询前需要建立索引。如果设置auto_create_index==True并且配置了一条index规则，会自动设置。</p>
+  <div class="highlight"><pre><span></span><span class="n">example.index_via_config(<</span><span class="n">name>)</span><span class="os"> # name缺省时使用设置的第一条规则</span></pre></div>
+</li>
+
+<li>查询
+  <p>在进行ANN查询前需要建立索引。如果设置auto_create_index==True并且配置了一条index规则，会自动设置。</p>
+<div class="highlight"><pre><span></span><span class="os"># input: vec, list[vec], str, list[str](auto_vectorize=True)</span>
+<span class="n"> example.search_via_config(</span><span class="ly">input</span><span class="n">, </span><span class="mb">name</span><span class="n">=<</span><span class="n">name>)</span>
+<span class="os"># output: [{f: v}], [[{f: v}]] # 只输出output_fields中指定的field</span>
+</pre></div>
+</li>
+
+<li>建立索引
+  <p>其他: <code class="docutils literal notranslate">__getitem__(key), __contains__(key), keys(), items(), __len__()</code></p>
+</li>
+</ol>
+
+<div class="section" id="sqlite">
+<h3>Sqlite<a class="headerlink" href="#sqlite" title="Permalink to this heading">#</a></h3>
+<p>Sqlite相关的工具包含AutoStoredDict和AutoStoredSet,位于<code class="docutils literal notranslate">common/utils/database_utils.py</code></p>
+<ol>
+<li><p>AutoStoredDict继承自SqliteDict，支持与dict类似的数据库操作：</p>
+<div class="highlight"><pre><span></span><span class="n">example = AutoStoredDict(</span><span class="vm">'test.db'</span><span class="n">,</span> <span class="mb">tablename</span><span class="n">=</span><span class="vm">'test'</span><span class="n">)</span>
+<span></span><span class="n">example[</span><span class="vm">'A'</span><span class="n">]</span> <span class="n">=</span> <span class="vm">'Alice'</span>
+<span class="n">example == {</span><span class="vm">'A'</span></span><span class="n">:</span><span class="vm">'Alice'</span></span>}</span><span class="os"> # True</span>
+</pre></div>
+</li>
+
+<li><p>AutoStoredSet在表中建立一个<code class="docutils literal notranslate">key='__set'</code></p>
+<div class="highlight"><pre><span></span><span class="n">example = AutoStoredDict(</span><span class="vm">'test.db'</span><span class="n">,</span> <span class="mb">tablename</span><span class="n">=</span><span class="vm">'set_test'</span><span class="n">)</span>
+<span></span><span class="n">example.add(</span><span class="vm">'a'</span><span class="n">)</span>
+<span class="n">example == </span><span class="ow">set</span></span><span class="n">(</span><span class="vm">'a'</span></span>)</span><span class="os"> # True</span>
+</pre></div>
+</li>
+
 </div>
-<p>然后通过docker-compose创建并运行7个container，其中包含server，iot- server，五个参与群聊的agent，以及catering_react_agent，drink_react_agent，entertainment_react_agent，environment_react_agent。</p>
 
-<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f</span> <span class="n">dockerfiles/compose/IOT_Party.yml</span> <span class="n">up</span> <span class="n">--build</span>
-</pre></div>
-
-<p>启动之后，SensorChecker会去轮询地检查所有的传感器是否有检测到变化，对于这个目前的仿真情况，在启动IOT-Server的同一台机器上，可以使用如下Python脚本完成人为的传感器值的修改。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="vi">from</span> <span class="nn">miio</span> <span class="vi">import</span> <span class="n">DeviceFactory</span> 
-<span class="vi">from</span> <span class="nn">typing</span> <span class="vi">import</span> <span class="n">Dict</span> 
-
-<span class="os"># 此处创建一个客户端</span>
-<span class="n">dev =</span> <span class="n">DeviceFactory.create(</span><span class="vm">"127.0.0.0.1"</span><span class="o">,</span> <span class="vm">"00000000000000000000000000000000"</span></span><span class="o">)</span>
-<span class="os"># 此处修改temperature-humidity-sensor的温度为0</span>
-<span class="n">dev.send(</span> 
-    <span class="n">command=</span><span class="vm">"temperature-humidity-sensor.set_properties"</span><span class="o">,</span>
-    <span class="n">parameters=</span><span class="o">[{</span><span class="vm">"did"</span><span class="o">:</span> <span class="vm">".."</span><span class="o">,</span> <span class="vm">"siid"</span><span class="o">:</span> <span class="n">2</span><span class="o">,</span> <span class="vm">"piid"</span><span class="o">:</span> <span class="n">1</span><span class="o">,</span> </span> <span class="vm">"value"</span><span class="o">:</span> <span class="n">0</span><span class="o">}]</span><span class="o">,</span>
-<span class="o">)</span>
-<span class="os"># 此处修改temperature-humidity-sensor的温度为0</span>
-<span class="n">dev.send(</span> 
-    <span class="n">command=</span><span class="vm">"illumination-sensor.set_properties"</span><span class="o">,</span>
-    <span class="n">parameters=</span><span class="o">[{</span><span class="vm">"did"</span><span class="o">:</span> <span class="vm">".."</span><span class="o">,</span> <span class="vm">"siid"</span><span class="o">:</span> <span class="n">2</span><span class="o">,</span> <span class="vm">"piid"</span><span class="o">:</span> <span class="n">1</span><span class="o">,</span> </span> <span class="vm">"value"</span><span class="o">:</span> <span class="n">0</span><span class="o">}]</span><span class="o">,</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-
-
+</ol>
 </div>
 </div>
 
@@ -284,23 +312,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../customize/agent.html">
+          <a class="next-page" href="../case/IOA.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Agent</div>
+                <div class="title">IOT Paper Writing</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../case/IOT_1.html">
+          <a class="prev-page" href="../index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">IOT Party</div>
+                <div class="title">Home</div>
                 
               </div>
             </a>
@@ -334,11 +362,11 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">IOA Paper Writing</a><ul>
-<li><a class="reference internal" href="#run_IOT">Docker 运行</a><ul>
+<li><a class="reference internal" href="#">数据库</a><ul>
+<li><a class="reference internal" href="#milvus">Milvus向量数据库</a><ul>
 </ul>
 </li>
-
+<li><a class="reference internal" href="#sqlite">Sqlite</a></li>
 </ul>
 </li>
 </ul>

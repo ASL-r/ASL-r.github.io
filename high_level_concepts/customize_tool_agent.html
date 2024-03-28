@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>IOT Daily Life</title>
+        <title>Customize Tool Agent</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -177,7 +177,7 @@
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="#">自定义Tool Agent</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/database.html">数据库</a></li>
     <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
   <ul>
@@ -189,7 +189,7 @@
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../case/IOA.html">IOA Paper Writing</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../case/IOT_1.html">IOT Party</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="#">IOT Daily Life</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../case/IOT_2.html">IOT Daily Life</a></li>
   
   <p class="caption" role="heading"><span class="caption-text">自定义Agent</span></p>
   <ul>
@@ -240,42 +240,56 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="iot_daily_life">
-<h2>IOT Daily Life<a class="headerlink" href="#IOT_daily_life" title="Permalink to this heading">#</a></h2>
+          <div class="section" id="customize_tool_agent">
+<h2>自定义Tool Agent<a class="headerlink" href="#customize_tool_agent" title="Permalink to this heading">#</a></h2>
 <br></br>
-<p>IOT Daily: 在IOT Daily场景中，有5个agent组队进行沟通协作应对传感器发生的变化，这五个agent分别是SensorChecker, CatererAssistant, EntertainmentAssistant, EnvironmentAssistant, DrinkerAssistant, 其中CatererAssistant, EntertainmentAssistant, EnvironmentAssistant, DrinkerAssistant 是四个基于ReAct agent的communication layer去使用不同的智能体以完成对于传感器变化的应对。以下是如何启动并使用。</p>
+<p>以下是接入第三方Agent的简要指南。如果想要接入一个第三方仓库中的agent，那么我们主要需要考虑两件事：</p>
+<ul><li>为第三方agent构建一个docker，并通过FastAPI或其他网络框架向外暴露<code class="docutils literal notranslate">run</code>接口。</li>
+  <ul>
+  <li><code class="docutils literal notranslate">run(task_desc)</code>：从头开始执行task_desc任务，并返回执行结果字符串。</li>
+  </ul>
+  <li>写一个adapter，将第三方agent和AgentVerse连接起来。其实主要就是进行一些数据格式的转换，比如AgentVerse中的memory信息都使用<code class="docutils literal notranslate">common/types/llm.py</code>common/types/llm.py中的LLMResult来存储，那么adapter的作用就是把这个转换为第三方agent接受的格式，并调用第一步中得到的docker提供的接口。adapter将作为AgentVerse中与第三方agent交互的中间层。
+  </li>
+</ul>
 
-<div class="section" id="run_IOT">
-<h3>Docker 运行<a class="headerlink" href="#run_IOT" title="Permalink to this heading">#</a></h3>
-<p>首先创建ReAct Agent镜像，其中http_proxy是optional，是为了在构建docker容器时使用你的本机代理，因为有一些需要翻墙下载的包。如果你的电脑上用的不是clash，需要把7890端口换成你代理软件的端口。如果你已经在外网，把这个参数删掉。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">docker</span> <span class="n">build</span> <span class="n">-f</span><span> </span><span class="n">dockerfiles/tool_agents/react.Dockerfile</span><span> </span><span>--build-arg</span> <span>http_proxy=http://host.docker.internal:7890</span> <span>--build-arg</span> <span>https_proxy=http://host.docker.internal:7890</span> <span class="o">-</span><span class="n">t</span> <span class="n">react:latest</span> <span class="o">.</span> 
-</pre></div>
+
+<div class="section" id="openinterpreter">
+<h3>Openinterpreter Example<a class="headerlink" href="#openinterpreter" title="Permalink to this heading">#</a></h3>
+<ul>
+  <li><strong>为Open Interpreter构建一个http服务</strong>。首先，在<code class="docutils literal notranslate">im_client/agents/open_interpreter</code>目录中创建的open_interpreter_agent.py会被docker化，在这其中写好了一些FastAPI的post的endpoint，在使用uvicorn启动的时候会暴露作为http服务。之后使用docker启动的时候，这些endpoint可以被外界请求。</li>
+  <li><strong>为Open Interpreter创建Docker</strong>。之后，我们需要创建一个Dockerfile文件，位于<code class="docutils literal notranslate">dockerfiles/tool_agents</code>中。这样我们可以将Open Interpreter这样的tool agent使用docker进行启动，以避免与AgentVerse可能的环境冲突。</li>
+  <li><strong>为Open Interpreter构建Adapter</strong>。在<code class="docutils literal notranslate">im_client/agents/open_interpreter中创建的open_interpreter_agent_adapter.py</code>是一个Open Interpreter的adapter。他去构建AgentVerse和Open Interpreter数据格式上的转换，并且把要求转发到Open Interpreter的docker容器。Adapter中同样提供了run，里面进行数据格式的转换，并通过post请求去调用Open Interpreter docker的对应endpoint。</li>
+</ul>
+
+
+<div class="section" id="dockerstart">
+<h3>Docker 启动<a class="headerlink" href="#dockerstart" title="Permalink to this heading">#</a></h3>
+<ul>
+  <li>在<code class="docutils literal notranslate">docker-compose.yml</code>中的一个agent配置中设置好其tool agent对应的配置文件环境变量<code class="docutils literal notranslate">CUSTOM_CONFIG</code>，同时在<code class="docutils literal notranslate">CUSTOM_CONFIG</code>指定的文件中定义tool agent相关的参数。</li>
+  <li>在终端中build你之前写的Dockerfile，例如<code class="docutils literal notranslate">docker build -f dockerfiles/tool_agents/open_interpreter.Dockerfile -t open_interpreter:latest .</code>。然后运行<code class="docutils literal notranslate">docker-compose up --build</code>启动服务器以及多个communication agent。</li>
+</ul>
+
+<div class="section" id="logic">
+<h3>逻辑<a class="headerlink" href="#logic" title="Permalink to this heading">#</a></h3>
+<p>目前分为三个阶段，分别是:</p>
+<ol>
+  <li>Team Up阶段。在这个阶段，communication layer中的llm会接收到用户的goal，并根据agent_contact决定：
+    <ul>
+      <li>如果有合适的agent，就会向服务器发送组队请求，然后等待服务器返回的群聊id</li>
+      <li>如果没有合适的agent，就会向服务器发送agent查找，给出自己认为可以合作的agent的特征，然后等待服务器返回查找到的相关agent列表。并最后发送组队请求</li>
+    </ul>
+  </li>
+  <li>Coordination阶段。在这个阶段，communication agent可以向刚刚创建的群聊中发送消息，同时指定下一个说话的人。在这个阶段，有两个protocol（待定）：
+    <ul>
+      <li>discussion protocol：用于讨论任务的细节，包括任务的目标、任务的细节、任务的分工等</li>
+      <li>vote protocol：当有一个agent提出自己关于接下来的计划，需要指明使用该protocol，一旦指明，则进入投票阶段，其他agent将对agent的提议进行投票，投票结果决定是否采纳该提议。所有人同意，则进入下一个阶段；否则，返回discussion</li>
+    </ul>
+  </li>
+  <li>Execution阶段。在这个阶段，communication agent按照刚刚讨论的方案，给自己的tool agent分配任务。同时，随机时间内查看tool agent的memory，判断是否有足够的信息需要与其他agent进行同步，并将消息发送至群聊中。</li>
+</ol>
+
+
 </div>
-<p>然后通过docker-compose创建并运行7个container，其中包含server，iot- server，五个参与群聊的agent，以及catering_react_agent，drink_react_agent，entertainment_react_agent，environment_react_agent。</p>
-
-<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f</span> <span class="n">dockerfiles/compose/IOT_Party.yml</span> <span class="n">up</span> <span class="n">--build</span>
-</pre></div>
-
-<p>启动之后，SensorChecker会去轮询地检查所有的传感器是否有检测到变化，对于这个目前的仿真情况，在启动IOT-Server的同一台机器上，可以使用如下Python脚本完成人为的传感器值的修改。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="vi">from</span> <span class="nn">miio</span> <span class="vi">import</span> <span class="n">DeviceFactory</span> 
-<span class="vi">from</span> <span class="nn">typing</span> <span class="vi">import</span> <span class="n">Dict</span> 
-
-<span class="os"># 此处创建一个客户端</span>
-<span class="n">dev =</span> <span class="n">DeviceFactory.create(</span><span class="vm">"127.0.0.0.1"</span><span class="o">,</span> <span class="vm">"00000000000000000000000000000000"</span></span><span class="o">)</span>
-<span class="os"># 此处修改temperature-humidity-sensor的温度为0</span>
-<span class="n">dev.send(</span> 
-    <span class="n">command=</span><span class="vm">"temperature-humidity-sensor.set_properties"</span><span class="o">,</span>
-    <span class="n">parameters=</span><span class="o">[{</span><span class="vm">"did"</span><span class="o">:</span> <span class="vm">".."</span><span class="o">,</span> <span class="vm">"siid"</span><span class="o">:</span> <span class="n">2</span><span class="o">,</span> <span class="vm">"piid"</span><span class="o">:</span> <span class="n">1</span><span class="o">,</span> </span> <span class="vm">"value"</span><span class="o">:</span> <span class="n">0</span><span class="o">}]</span><span class="o">,</span>
-<span class="o">)</span>
-<span class="os"># 此处修改temperature-humidity-sensor的温度为0</span>
-<span class="n">dev.send(</span> 
-    <span class="n">command=</span><span class="vm">"illumination-sensor.set_properties"</span><span class="o">,</span>
-    <span class="n">parameters=</span><span class="o">[{</span><span class="vm">"did"</span><span class="o">:</span> <span class="vm">".."</span><span class="o">,</span> <span class="vm">"siid"</span><span class="o">:</span> <span class="n">2</span><span class="o">,</span> <span class="vm">"piid"</span><span class="o">:</span> <span class="n">1</span><span class="o">,</span> </span> <span class="vm">"value"</span><span class="o">:</span> <span class="n">0</span><span class="o">}]</span><span class="o">,</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-
-
 </div>
 </div>
 
@@ -284,23 +298,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../customize/agent.html">
+          <a class="next-page" href="../high_level_concepts/database.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Agent</div>
+                <div class="title">数据库</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../case/IOT_1.html">
+          <a class="prev-page" href="../high_level_concepts/code_structure.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">IOT Party</div>
+                <div class="title">代码结构</div>
                 
               </div>
             </a>
@@ -334,11 +348,12 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">IOA Paper Writing</a><ul>
-<li><a class="reference internal" href="#run_IOT">Docker 运行</a><ul>
+<li><a class="reference internal" href="#">自定义Tool Agent</a><ul>
+<li><a class="reference internal" href="#openinterpreter">Openinterpreter Example</a><ul>
 </ul>
 </li>
-
+<li><a class="reference internal" href="#dockerstart">Docker 启动</a></li>
+<li><a class="reference internal" href="#logic">逻辑</a></li>
 </ul>
 </li>
 </ul>
