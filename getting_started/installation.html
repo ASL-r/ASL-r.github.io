@@ -175,10 +175,9 @@
   <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">沟通机制</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/database.html">数据库</a></li>
     <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
   <ul>
     <li class="toctree-l1"><a class="reference internal" href="#">AgentVerse-IM安装</a></li>
@@ -244,33 +243,55 @@
 <h2>AgentVerse-IM 安装<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
 <br></br>
 
-<p>接下来将进入AgentVerse-IM的世界</p>
-
 <div class="section" id="Manually-intallation">
 <h3>手动安装（推荐 ！）<a class="headerlink" href="#Manually-intallation" title="Permalink to this heading">#</a></h3>
-<p><strong>确保你的Python >= 3.9(建议全部通用3.10)。</strong></p>
-<p>在命令行使用conda创建python环境</p>
+<div class="admonition tip">
+  <p class="admonition-title">Tip</p>
+  <p><strong>确保你的Python >= 3.10(建议全部通用3.10)。</strong></p>
+</div>
+<ol>
+<li><p>在命令行使用conda创建python环境</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span><span> </span><span class="n">your_env_name</span><span> </span><span class="n">python==3.10</span>
 </pre></div>
-</div>
-<p>将AgentVerse-IM clone到本地</p>
+</div></li><br>
+<li><p>将AgentVerse-IM clone到本地</p>
 <div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https://github.com/AgentVerse/AgentVerse-IM.git</span>
 <span></span><span class="kn">cd</span> <span class="n">AgentVerse-IM</span>
-<span></span><span class="n">pip</span> <span class="n">install</span> <span class="nb">.</span>
-</pre></div>
+</pre></div></li><br>
 
+<li><p>确保你本地环境已安装docker，若未安装docker，下载详情可见<a href="https://docs.docker.com/desktop/">docker官网</a></p>
+</li>
 
-<div class="section" id="environment-setup">
-<h3>OpenAI 环境变量设置<a class="headerlink" href="#environment-setup" title="Permalink to this heading">#</a></h3>
-<p>你需要在你环境中export你的 OpenAI API Key</p>
-<div class="highlight"><pre><span></span><span class="kn">export</span> <span class="n">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">"your_api_key_here"</span>
-</pre></div>
-<p>如果你想使用Azure OpenAI服务，请export你的Azure OpenAI Key和OpenAI API base</p>
-<div class="highlight"><pre><span></span><span class="kn">export</span> <span class="n">AZURE_OPENAI_API_KEY</span><span class="o">=</span><span class="s2">"your_api_key_here"</span>
-<span></span><span class="kn">export</span> <span class="n">AZURE_OsPENAI_API_BASE</span><span class="o">=</span><span class="s2">"your_api_base_here"</span>
-</pre></div>
-</div>
+</ol><br>
 
+<div class="section" id="server">
+<h3>Server<a class="headerlink" href="#server" title="Permalink to this heading">#</a></h3>
+<ol>
+<li><p>构建启动server所需要的docker镜像</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">docker</span> <span class="n">build -f dockerfiles/server.Dockerfile -t server:latest . </span>
+</pre></div>
+</div></li><br>
+<li><p>创建并完成<a href="../customize/docker-compose.html">docker-compose文件</a><code class="docutils literal notranslate">your_server.yml</code>，通过docker-compose启动服务器</p>
+<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f dockerfiles/compose/your_server.yml up</span>
+</pre></div></li>
+
+</ol><br>
+
+<div class="section" id="client">
+<h3>Client<a class="headerlink" href="#client" title="Permalink to this heading">#</a></h3>
+<ol>
+<li><p>构建Agent所需要的镜像</p>
+  <ul>
+  <li><strong>Agent</strong>
+    <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">docker</span> <span class="n">build -f dockerfiles/agent.Dockerfile -t agent:latest . </span></pre></div>
+  </div></li>
+<li><strong>Tool Agent(e.g React Agent)</strong>
+  <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">docker</span> <span class="n">build -f dockerfiles/tool_agents/react.Dockerfile -t react:latest . </span></pre></div>
+</div></li></li></ul><br>
+<li><p>创建并完成<a href="../customize/docker-compose.html">docker-compose文件</a><code class="docutils literal notranslate">test_agent.yml</code>，通过docker-compose启动Agents</p>
+<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f dockerfiles/compose/test_agent.yml up</span></pre></div></li>
+
+</ol>
 
 </div>
 </div>
@@ -289,14 +310,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../index.html">
+          <a class="prev-page" href="../high_level_concepts/customize_tool_agent.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Home</div>
+                <div class="title">自定义Tool Agent</div>
                 
               </div>
             </a>
@@ -331,10 +352,11 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">AgentVerse-IM安装</a><ul>
-<li><a class="reference internal" href="#Manually-intallation">手动安装（推荐 ！）</a><ul>
+<li><a class="reference internal" href="#Manually-intallation">手动安装（推荐 ！）</a>
+<li><a class="reference internal" href="#server">Server</a></li>
+<li><a class="reference internal" href="#client">Client</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#environment-setup">OpenAI 环境变量设置</a></li>
 </ul>
 </li>
 </ul>

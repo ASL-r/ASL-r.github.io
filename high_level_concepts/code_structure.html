@@ -175,10 +175,9 @@
   <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">沟通机制</a></li>
   <li class="toctree-l1"><a class="reference internal" href="#">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/database.html">数据库</a></li>
     <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
   <ul>
     <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">AgentVerse-IM安装</a></li>
@@ -245,26 +244,32 @@
     <h2>💻 代码结构<a class="headerlink" href="#code_structure" title="Permalink to this heading">#</a></h2>
     <br></br>
     <ul class="arabic simple">
-      <li><p><code class="docutils literal notranslate">im_client/agents</code>: 存放不同tool agent的接入代码，目前支持ReAct Agent <code class="docutils literal notranslate">im_client/agents/react</code>、OpenAI Assistant <code class="docutils literal notranslate">im_client/agents/openai_assistant</code>、Open Interpreter <code class="docutils literal notranslate">im_client/agents/open_interpreter</code>。对于如何新接入一个agent，可见<a class="reference internal" href="customize/agent.html">自定义Tool Agent</a>的描述。</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/agents</code>: 存放不同tool agent以下是目前支持的Agent。对于如何新接入一个agent，可见<a class="reference internal" href="customize_tool_agent.html">自定义Tool Agent</a>的描述。</p>
+        <ol type="i"><li><strong>ReAct Agent</strong>: <code class="docutils literal notranslate">im_client/agents/react</code></li>
+          <li><strong>OpenAI Assistant</strong>: <code class="docutils literal notranslate">im_client/agents/openai_assistant</code></li>
+          <li><strong>Open Interpreter</strong>: <code class="docutils literal notranslate">im_client/agents/open_interpreter</code></li>
+          <li><strong>AutoGPT</strong>: <code class="docutils literal notranslate">im_client/agents/autogpt</code></li>
+        </ol>
+      </li>
+        <br>
+
+      <li><p><code class="docutils literal notranslate">im_client/communication</code>: Communication Layer的具体实现。 <code class="docutils literal notranslate">communication_layer.py</code>、实现了主要逻辑， <code class="docutils literal notranslate">main.py</code>是启动入口，<code class="docutils literal notranslate">task_management.py</code>维护当前群聊中所有正在进行/已完成的任务状态（会作为prompt里的内容给到agent里）。</p></li><br>
     
-      <li><p><code class="docutils literal notranslate">im_client/communication</code>: Communication Layer的具体实现。 <code class="docutils literal notranslate">communication_layer.py</code>、实现了主要逻辑， <code class="docutils literal notranslate">main.py</code>是启动入口，<code class="docutils literal notranslate">task_management.py</code>维护当前群聊中所有正在进行/已完成的任务状态（会作为prompt里的内容给到agent里）。</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/server</code>: 中心服务器的实现，包括agent registry、session manager等。</p></li><br>
     
-      <li><p><code class="docutils literal notranslate">im_client/server</code>: 中心服务器的实现，包括agent registry、session manager等。</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/config</code>: 存储了一些agent的config文件，在docker-compose进行整个系统启动时，会读取docker-compose配置中指定的config，之后会提到。另外，这个文件夹的tools文件夹里存着一些描述tool的yaml。</p></li><br>
     
-      <li><p><code class="docutils literal notranslate">im_client/config</code>: 存储了一些agent的config文件，在docker-compose进行整个系统启动时，会读取docker-compose配置中指定的config，之后会提到。另外，这个文件夹的tools文件夹里存着一些描述tool的yaml。</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/tools</code>: 包含一些工具的具体实现，他们的描述被存在上面说的这个<code class="docutils literal notranslate">im_client/config/tools</code>里。</p></li><br>
     
-      <li><p><code class="docutils literal notranslate">im_client/tools</code>: 包含一些工具的具体实现，他们的描述被存在上面说的这个<code class="docutils literal notranslate">im_client/config/tools</code>里。</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/llms</code>: 目前只实现了openai的接口，也就是communicative agent的LLM暂时只支持openai模型。</p></li><br>
     
-      <li><p><code class="docutils literal notranslate">im_client/llms</code>: 目前只实现了openai的接口，也就是communicative agent的LLM暂时只支持openai模型。</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/memory</code>: 目前基本还是只用的最简单的列表memory，就是把所有消息原封不动地存下来。</p></li><br>
     
-      <li><p><code class="docutils literal notranslate">im_client/memory</code>: 目前基本还是只用的最简单的列表memory，就是把所有消息原封不动地存下来。</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/prompts</code>: 存储几乎框架中所有用到的prompt</p></li><br>
     
-      <li><p><code class="docutils literal notranslate">im_client/prompts</code>: 存储几乎框架中所有用到的prompt</p></li>
-    
-      <li><p><code class="docutils literal notranslate">im_client/types</code>: 框架中用到的一些数据类型，用pydantic来进行类型标注，比如任务的描述、任务的状态等</p></li>
+      <li><p><code class="docutils literal notranslate">im_client/types</code>: 框架中用到的一些数据类型，用pydantic来进行类型标注，比如任务的描述、任务的状态等</p></li><br>
       <li><p><code class="docutils literal notranslate">dockerfiles</code>: 存放了所有的dockerfile，用于构建agent的docker镜像和启动整个系统的docker-compose</p></li>
     </ul>
-    <p>其他没提到的文件/文件夹详情可见<strong><a class="reference external" href="https://github.com/OpenBMB/AgentVerse">AgentVerse</a></strong>。</p>
 
 
 
@@ -291,7 +296,7 @@
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">机制设计</div>
+                <div class="title">沟通机制</div>
                 
               </div>
             </a>

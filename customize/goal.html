@@ -175,10 +175,9 @@
   <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">机制设计</a></li>
+  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">沟通机制</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
   <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/database.html">数据库</a></li>
     <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
   <ul>
     <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">AgentVerse-IM安装</a></li>
@@ -243,40 +242,11 @@
           <div class="section" id="customize_goal">
 <h2>创建Goal<a class="headerlink" href="#customize_goal" title="Permalink to this heading">#</a></h2>
 <br></br>
-<p>在<code class="docutils literal notranslate">tests</code>目录下创建<code class="docutils literal notranslate">test_your_case.py</code>。比如: <code class="docutils literal notranslate">tests/test_IOT_real.py</code></p>
-<div class="section" id="agentinfo">
-  <h3>AgentInfo<a class="headerlink" href="#agentinfo" title="Permalink to this heading">#</a></h3>
-  <p>创建所有可能参与到任务的Agent，并且配置好Agent所有的信息，最后将所有创建好的Agent加入可组队的列表里。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="vi">from</span> <span class="n">common.types.agent</span> <span class="vi">import</span> <span class="n">AgentInfo</span>
-<span class="n">Alice =</span> <span class="n">AgentInfo</span><span class="n">(</span>
-    <span class="il">name</span> <span class="n">=</span> <span class="vm">"Alice"</span><span class="n">,</span>
-    <span class="il">type</span> <span class="n">=</span> <span class="vm">"Human Assistant"</span><span class="n">,</span>
-    <span class="il">desc</span> <span class="n">=</span> <span class="vm">"Alice is a master of algorithms and code. With a knack for turning complex problems into elegant software solutions."</span><span class="n">,</span>
-<span class="o">)</span>
-
-<span class="n">Bob =</span> <span class="n">AgentInfo</span><span class="n">(</span>
-    <span class="il">name</span> <span class="n">=</span> <span class="vm">"Bob"</span><span class="n">,</span>
-    <span class="il">type</span> <span class="n">=</span> <span class="vm">"Human Assistant"</span><span class="n">,</span>
-    <span class="il">desc</span> <span class="n">=</span> <span class="vm">"WeatherWizard specializes in delivering accurate weather forecasts and historical climate data. With advanced algorithms, it provides insights into weather patterns, helping with planning and research."</span><span class="n">,</span>
-<span class="o">)</span>
-
-<span class="n">WeatherWizard =</span> <span class="n">AgentInfo</span><span class="n">(</span>
-    <span class="il">name</span> <span class="n">=</span> <span class="vm">"WeatherWizard"</span><span class="n">,</span>
-    <span class="il">type</span> <span class="n">=</span> <span class="vm">"Thing Assistant"</span><span class="n">,</span>
-    <span class="il">desc</span> <span class="n">=</span> <span class="vm">"Alice is a master of algorithms and code. With a knack for turning complex problems into elegant software solutions."</span><span class="n">,</span>
-<span class="o">)</span>
-
-<span class="n">all_agents =</span> <span class="n">[</span>
-    <span class="n">Alice</span><span class="n">,</span>
-    <span class="n">Bob</span><span class="n">,</span>
-    <span class="n">WeatherWizard</span><span class="n">,</span>
-<span class="o">]</span>
-</pre></div>
-</div>
+<p>在<code class="docutils literal notranslate">tests</code>目录下创建<code class="docutils literal notranslate">test_your_case.py</code>。比如: <code class="docutils literal notranslate">tests/test_IOT_real.py</code></p><br>
 
 <div class="section" id="goal">
   <h3>Goal<a class="headerlink" href="#goal" title="Permalink to this heading">#</a></h3>
-  <p>将你的任务目标描述补全到<code class="docutils literal notranslate">goal</code>变量中，设置<code class="docutils literal notranslate">team_member_names</code>为None，<code class="docutils literal notranslate">team_up_depth</code>为你想要嵌套组队的深度</p>
+  <p>将你的任务目标描述补全到<code class="docutils literal notranslate">goal</code>变量中，发送POST请求到<code class="docutils literal notranslate">url: "http://127.0.0.1:5050/launch_goal"</code>，设置<code class="docutils literal notranslate">team_member_names</code>为None，<code class="docutils literal notranslate">team_up_depth</code>为你想要嵌套组队的深度</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="vi">import</span> <span class="n">requests</span> 
 <span class="n">goal =</span> <span class="vm">""" your task goal """ (ex. """ Complete preparations for  a Halloween themed party. The following is the list of guests, RanLi (vegetarian), WeiZe (fitness enthusiast), YiTong (gluten-free), QianChen (kosher), Chengyang (halal). """)</span>
 <span class="n">response =</span> <span class="n">requests.</span><span class="bp">post</span><span class="n">(</span>
@@ -350,7 +320,6 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Goal</a><ul>
-<li><a class="reference internal" href="#agentinfo">AgentInfo</a></li>
 <li><a class="reference internal" href="#goal">Goal</a></li>
 
 
