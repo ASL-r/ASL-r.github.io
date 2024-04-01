@@ -1,0 +1,403 @@
+<!doctype html>
+<html class="no-js" lang="zh" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="AgentVerse-IM 安装" href="../getting_started_zh/installation.html" /><link rel="prev" title="代码结构" href="code_structure.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>自定义Tool Agent - AgentVerse-IM 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">AgentVerse-IM  文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">AgentVerse-IM  文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../home_zh.html">欢迎来到 AgentVerse-IM 🪐!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">HIGH-LEVEL 概念</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="framework.html">框架理念</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mechanism.html">沟通机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_structure.html">代码结构</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">自定义Tool Agent</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started_zh/installation.html">AgentVerse-IM 安装</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">运行 CASES</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../case_zh/IOA.html">IOA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case_zh/IOT_1.html">IOT Party Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case_zh/IOT_2.html">IOT Real Device</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">自定义AGENT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../customize_zh/agent.html">创建Agent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize_zh/tool.html">创建Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize_zh/goal.html">创建Goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize_zh/docker-compose.html">创建docker-compose</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">分布式服务简单配置</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../distributed_service_zh/config.html">配置文件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../distributed_service_zh/set_server.html">部署AgentVerse-IM服务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../distributed_service_zh/run_case.html">本地运行Case</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="tool-agent">
+<h1>自定义Tool Agent<a class="headerlink" href="#tool-agent" title="Link to this heading">#</a></h1>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>以下是接入第三方Agent的简要指南。如果想要接入一个第三方仓库中的agent，那么我们主要需要考虑两件事:</p>
+<ul>
+<li><p>为第三方agent构建一个docker，并通过FastAPI或其他网络框架向外暴露run接口。</p>
+<ul class="simple">
+<li><p>run(task_desc)：从头开始执行task_desc任务，并返回执行结果字符串。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+<li><p>写一个adapter，将第三方agent和AgentVerse连接起来。其实主要就是进行一些数据格式的转换，比如AgentVerse中的memory信息都使用common/types/llm.pycommon/types/llm.py中的LLMResult来存储，那么adapter的作用就是把这个转换为第三方agent接受的格式，并调用第一步中得到的docker提供的接口。adapter将作为AgentVerse中与第三方agent交互的中间层。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="openinterpreter-example">
+<h2>Openinterpreter Example<a class="headerlink" href="#openinterpreter-example" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>为Open Interpreter构建一个http服务</strong>。首先，在 <code class="code docutils literal notranslate"><span class="pre">im_client/agents/open_interpreter</span></code> 目录中创建的open_interpreter_agent.py会被docker化，在这其中写好了一些FastAPI的post的endpoint，在使用uvicorn启动的时候会暴露作为http服务。之后使用docker启动的时候，这些endpoint可以被外界请求。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>为Open Interpreter创建Docker</strong>。之后，我们需要创建一个Dockerfile文件，位于 <code class="code docutils literal notranslate"><span class="pre">dockerfiles/tool_agents</span></code> 中。这样我们可以将Open Interpreter这样的tool agent使用docker进行启动，以避免与AgentVerse可能的环境冲突。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>为Open Interpreter构建Adapter</strong>。在 <code class="code docutils literal notranslate"><span class="pre">im_client/agents/open_interpreter</span></code> 中创建的open_interpreter_agent_adapter.py是一个Open Interpreter的adapter。他去构建AgentVerse和Open Interpreter数据格式上的转换，并且把要求转发到Open Interpreter的docker容器。Adapter中同样提供了run，里面进行数据格式的转换，并通过post请求去调用Open Interpreter docker的对应endpoint。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="docker">
+<h3>Docker 启动<a class="headerlink" href="#docker" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>在 <code class="code docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> 中的一个agent配置中设置好其tool agent对应的配置文件环境变量CUSTOM_CONFIG，同时在 <code class="code docutils literal notranslate"><span class="pre">CUSTOM_CONFIG</span></code> 指定的文件中定义tool agent相关的参数。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p>在终端中build你之前写的Dockerfile，例如 <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">-f</span> <span class="pre">dockerfiles/tool_agents/open_interpreter.Dockerfile</span> <span class="pre">-t</span> <span class="pre">open_interpreter:latest</span> <span class="pre">.</span></code> 。然后运行 <code class="code docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">--build</span></code> 启动服务器以及多个communication agent。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="id1">
+<h3>逻辑<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>目前分为三个阶段，分别是:</p>
+<ol class="arabic">
+<li><p><strong>Team Up</strong> 阶段。在这个阶段，communication layer中的llm会接收到用户的goal，并根据agent_contact决定：</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p>如果有合适的agent，就会向服务器发送组队请求，然后等待服务器返回的群聊id。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p>如果没有合适的agent，就会向服务器发送agent查找，给出自己认为可以合作的agent的特征，然后等待服务器返回查找到的相关agent列表。并最后发送组队请求。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+<li><p><strong>Coordination</strong> 阶段。在这个阶段，communication agent可以向刚刚创建的群聊中发送消息，同时指定下一个说话的人。在这个阶段，有两个protocol（待定）：</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>discussion protocol</strong> ：用于讨论任务的细节，包括任务的目标、任务的细节、任务的分工等。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>vote protocol</strong> ：当有一个agent提出自己关于接下来的计划，需要指明使用该protocol，一旦指明，则进入投票阶段，其他agent将对agent的提议进行投票，投票结果决定是否采纳该提议。所有人同意，则进入下一个阶段；否则，返回discussion。</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+<li><p><strong>Execution</strong> 阶段。在这个阶段，communication agent按照刚刚讨论的方案，给自己的tool agent分配任务。同时，随机时间内查看tool agent的memory，判断是否有足够的信息需要与其他agent进行同步，并将消息发送至群聊中。</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../getting_started_zh/installation.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">AgentVerse-IM 安装</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="code_structure.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">代码结构</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Team AgentVerse-IM
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <div class="toc-tree-container" style="text-align:center">
+            <p>【<a href="../../index.html">English 🇺🇲</a> | Chinese 🇨🇳】</p> <br>
+            <a href="https://github.com/OpenBMB/AgentVerse"><img alt="../_images/github_2.png" src="../_images/github_2.png" style="width: 18.0px; height: 18.0px;" /></a>
+          </div>
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">自定义Tool Agent</a><ul>
+<li><a class="reference internal" href="#openinterpreter-example">Openinterpreter Example</a><ul>
+<li><a class="reference internal" href="#docker">Docker 启动</a></li>
+<li><a class="reference internal" href="#id1">逻辑</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=2ccfc426"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

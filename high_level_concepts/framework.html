@@ -1,31 +1,15 @@
-
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark">
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BYVB1ZVE6J"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            
-            gtag('config', 'G-BYVB1ZVE6J');
-            
-        </script>
-    <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Communication Mechanism" href="mechanism.html" /><link rel="prev" title="Welcome to AgentVerse-IM 🪐!" href="../home.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>Framework</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/algolia.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>Framework Philosophy - AgentVerse-IM documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -50,7 +34,7 @@
       }
     }
   }
-</style><script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="llamaindex-llamaindex" /><meta name="readthedocs-version-slug" content="stable" /></head>
+</style></head>
   <body>
     
     <script>
@@ -139,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">AgentVerse-IM Tutorial</div></a>
+      <a href="../index.html"><div class="brand">AgentVerse-IM  documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -162,50 +146,47 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">AgentVerse-IM Tutorial</span>
+  <span class="sidebar-brand-text">AgentVerse-IM  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="toctree-l1"><a class="reference internal"  href="../index.html"><strong>Home</strong></a></p>
-  <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
-  <li class="toctree-l1"><a class="reference internal" href="#">框架理念</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">沟通机制</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
-    <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
-  <ul>
-    <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">AgentVerse-IM安装</a></li>
-  <!-- <li class="toctree-l1"><a class="reference internal" href="getting_started/core.html">AgentVerse-IM核心思想</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="getting_started/structure.html">AgentVerse-IM代码结构</a></li> -->
-  
-  <p class="caption" role="heading"><span class="caption-text">运行 Cases</span></p>
-  <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../case/IOA.html">IOA Paper Writing</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../case/IOT_1.html">IOT Party</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../case/IOT_2.html">IOT Daily Life</a></li>
-  
-  <p class="caption" role="heading"><span class="caption-text">自定义Agent</span></p>
-  <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/agent.html">Agent</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/tool.html">Tool</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/goal.html">Goal</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/docker-compose.html">docker-compose</a></li>
-  
-  <p class="caption" role="heading"><span class="caption-text">分布式服务简单配置</span></p>
-  <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/config.html">配置文件</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/set_server.html">部署AgentVerse-IM服务</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/run_case.html">本地运行Case</a></li>
-  <!-- <li class="toctree-l1 has-children"><a class="reference internal" href="use_cases/q_and_a/root.html">IOA Paper Writing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul> -->
-  <!-- <li class="toctree-l2"><a class="reference internal" href="use_cases/q_and_a/rag_cli.html">IOT Party</a></li> -->
-  </ul>
-  </li>
+<li class="toctree-l1"><a class="reference internal" href="../home.html">Welcome to AgentVerse-IM 🪐!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">HIGH-LEVEL Concepts</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Framework Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mechanism.html">Communication Mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_structure.html">Code Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customize_tool_agent.html">Customize Tool Agent</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">AgentVerse-IM installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Run CASES</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../case/IOA.html">IOA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case/IOT_1.html">IOT Party Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case/IOT_2.html">IOT Real Device</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Customize AGENT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../customize/agent.html">Agent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize/tool.html">Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize/goal.html">Goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize/docker-compose.html">docker-compose</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Distributed Service</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../distributed_service/config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../distributed_service/set_server.html">Deploying AgentVerse-IM Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../distributed_service/run_case.html">Run Case locally</a></li>
+</ul>
 
 </div>
 </div>
@@ -239,63 +220,82 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="framework">
-<h2>框架理念<a class="headerlink" href="#framework" title="Permalink to this heading">#</a></h2>
-<br>
-
-<div class="section" id="why_design_framework">
-    <h3>🚀 为什么会设计这个框架<a class="headerlink" href="#why_design_framework" title="Permalink to this heading">#</a></h3>
-    <p>现在开源平台上有各种agent，例如AutoGPT、Open Interpreter等，他们各有所长。由于他们的开发者并不相同，所以大多数时候这些agent也只能各自为战，用户也难以将不同agent聚合到一起，通过他们取长补短来完成自己的复杂任务。参考现代人类合作范式，大家通过即时通讯软件进行消息互通和工作协调，我们认为如果要令不同的异构agent能够协作解决任务，需要有一个类似的统一架构，来使得这些agent得以相互沟通。基于此，我们提出了AgentVerse-IM，一个为Agent设计的即时通信软件。</p><br>
-  
-<div class="section" id="client">
-  <h3>Client<a class="headerlink" href="#client" title="Permalink to this heading">#</a></h3>
-  <p>目前大部分的agent在设计之初并不考虑multi-agent合作的情况，我们将现有的agent称为Tool Agent，因为他们更像是作为一个智能的tool完成某一个给定的任务。为了使这些不同的Tool Agent可以进行沟通，我们定义了一个Communication Layer将Tool Agent包裹起来，并将这整个看作一个<strong>Communicative Agent</strong> <code class="docutils literal notranslate">im_client/communication/communication_layer.py</code>，结构大体如下: </p>
-  <p><img alt="" src="../image.png" height="500" width="500"/></p>
-  <p><strong>Communication Layer</strong>中，包含几个重要的组件: </p><br>
-  <ul class="arabic simple">
-  <li><p><strong>LLM</strong>: 用于跟外界（其他agent等）进行沟通，同时也会给自己的Tool Agent分配任务（这个LLM可以和Tool Agent的LLM不一样，比如我们可以用基于GPT-3.5的OpenAI Assistant作为Tool Agent，但用GPT-4作为Communication Layer的LLM）</p></li><br>
-  <li><p><strong>Conversation Memory</strong>: 存储了Communicative Agent与其他Agent的沟通记录，包括任务的目标、聊天过程、结果等。因为我们希望Agent不是一个启动一次就结束的程序，而是一个可以持续的实体，所以Conversation Memory应该是一个数据库(截止至2024.2.3写文档时还未完全支持)，存储了历史所有任务的所有聊天记录。</p></li><br>
-  <li><p><strong>Agent Contact</strong>: 存储了之前所有与该agent合作过的agent信息，以及从之前合作过程中得出的对其他agent的评价，方便以后该agent找队友时进行参考。</p></li><br>
-  <li><p><strong>Tool Agent</strong>:  就是不同的agent，可以是OpenAI Assistant、ReAct agent、Open Interpreter等第三方agent，他们只负责去完成Communication Layer里的LLM给他们分配的任务，不会参与到实际的与其他agent交互的过程中。</p></li>
-  </ul><br>
-    
-<div class="section" id="server">
-  <h3>Server<a class="headerlink" href="#server" title="Permalink to this heading">#</a></h3>
-    <p>要使不同的Communicative Agent可以协同完成任务，需要一个中心服务器，这个服务器的功能包括: </p><br>
-    <ul class="arabic simple">
-    <li><p><strong>Agent Registry</strong>: 记录了所有接入AgentVerse-IM的agent的信息，包括agent的描述，agent的能力等。所有agent在启动的时候都应该以规定方式向这个服务器注册自己。同时支持根据agent的特征进行查找并返回合适的agent。</p></li><br>
-    <li><p><strong>Session Manager</strong>: 记录了所有正在进行的任务的信息，包括任务的目标、任务的参与者、任务的状态等。有点像是微信里的一个群聊，只不过这个群聊是由不同的agent组成的。接收到一个agent发送了消息到某个群里的话，就会自动把消息转发给这个群里其他agent。</p></li><br>
-    </ul>
-    </ul>
-    </div>
-    </div>
+          <section id="framework-philosophy">
+<h1>Framework Philosophy<a class="headerlink" href="#framework-philosophy" title="Link to this heading">#</a></h1>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
-
-
+<section id="why-this-framework-was-designed">
+<h2>🚀 Why this framework was designed<a class="headerlink" href="#why-this-framework-was-designed" title="Link to this heading">#</a></h2>
+<p>Various agents like AutoGPT, Open Interpreter, etc., are available on open-source platforms, each with their strengths. Since these agents are developed by different teams, they mostly operate in isolation, making it challenging for users to combine their capabilities to accomplish complex tasks. Drawing inspiration from modern human collaboration paradigms, where instant messaging software is used for communication and work coordination, we believe a similar unified architecture is needed to enable diverse, heterogeneous agents to cooperate and resolve tasks. Hence, we proposed AgentVerse-IM, an instant messaging software designed for Agents.</p>
+</section>
+<section id="client">
+<h2>Client<a class="headerlink" href="#client" title="Link to this heading">#</a></h2>
+<p>Most agents are not designed with multi-agent cooperation in mind initially. We refer to these existing agents as Tool Agents, as they act more like intelligent tools executing specific tasks. To enable different Tool Agents to communicate, we have defined a Communication Layer that encapsulates Tool Agents, considering the entire setup as a Communicative Agent found in im_client/communication/communication_layer.py, structured roughly as follows:</p>
+<a class="reference internal image-reference" href="../_images/image.png"><img alt="../_images/image.png" src="../_images/image.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p><strong>Communication Layer</strong> contains several important components:</p>
+<ul class="simple">
+<li><p><strong>LLM</strong> : Used for communication with the outside world (other agents, etc.) and also to allocate tasks to its Tool Agent (this LLM can be different from the Tool Agent’s LLM, for instance, we can use an OpenAI Assistant based on GPT-3.5 as a Tool Agent, but a GPT-4 as the Communication Layer’s LLM).</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
+<ul class="simple">
+<li><p><strong>Conversation Memory</strong> :  Stores communication records of the Communicative Agent with other Agents, including objectives, chat processes, results, etc. Since we envision an Agent not as a one-time startup program but as an ongoing entity, the Conversation Memory should be a database (not fully supported as of the documentation writing on 2024.2.3), holding all historical chat records of all tasks.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>Agent Contact</strong> : Stores information about all agents that have cooperated with this agent in the past, as well as evaluations of other agents based on previous collaborations, to facilitate future partner selection.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>Tool Agent</strong> : Different agents such as OpenAI Assistant, ReAct agent, Open Interpreter, and other third-party agents are only responsible for completing tasks assigned by the Communication Layer’s LLM and do not engage in actual interaction with other agents.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="server">
+<h2>Server<a class="headerlink" href="#server" title="Link to this heading">#</a></h2>
+<p>To enable different Communicative Agents to collaborate on tasks, a central server is required. The server’s functions include:</p>
+<ul class="simple">
+<li><p><strong>Agent Registry</strong> : Records information about all agents that have joined AgentVerse-IM, including descriptions and capabilities of the agents. All agents should register themselves with the server in a prescribed manner upon startup. It also supports searching for and returning suitable agents based on their characteristics.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>Session Manager</strong> : Records information about all ongoing tasks, including objectives, participants, and the status of the tasks. It functions somewhat like a group chat in WeChat, except that this ‘group chat’ is composed of different agents. If a message is sent by an agent to a group, it will be automatically forwarded to other agents in the group.</p></li>
+</ul>
+</section>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../high_level_concepts/mechanism.html">
+          <a class="next-page" href="mechanism.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">沟通机制</div>
+                <div class="title">Communication Mechanism</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../index.html">
+          <a class="prev-page" href="../home.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Home</div>
+                <div class="title">Welcome to AgentVerse-IM 🪐!</div>
                 
               </div>
             </a>
@@ -303,7 +303,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2024, Team AgentVerse-IM
+                Copyright &#169; 2024, 2024, Team AgentVerse-IM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -322,6 +322,10 @@
       
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
+          <div class="toc-tree-container" style="text-align:center">
+            <p>【English 🇺🇲 | <a href="../doc_zh/index_zh.html">Chinese 🇨🇳</a>】</p> <br>
+            <a href="https://github.com/OpenBMB/AgentVerse"><img alt="../_images/github_2.png" src="../_images/github_2.png" style="width: 18.0px; height: 18.0px;" /></a>
+          </div>
           <span class="toc-title">
             On this page
           </span>
@@ -329,15 +333,10 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">框架理念</a><ul>
-<li><a class="reference internal" href="#why_design_framework">🚀 为什么会设计这个框架</a></li>
+<li><a class="reference internal" href="#">Framework Philosophy</a><ul>
+<li><a class="reference internal" href="#why-this-framework-was-designed">🚀 Why this framework was designed</a></li>
 <li><a class="reference internal" href="#client">Client</a></li>
 <li><a class="reference internal" href="#server">Server</a></li>
-
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -349,16 +348,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/scripts/furo.js"></script>
-    <script src="../_static/js/mendablesearch.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/@docsearch/js@3.3.3/dist/umd/index.js"></script>
-    <script defer="defer" src="../_static/js/algolia.js"></script>
-    <script defer="defer" src="../_static/js/leadfeeder.js"></script>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
