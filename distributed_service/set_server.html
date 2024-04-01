@@ -1,31 +1,15 @@
-
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark">
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BYVB1ZVE6J"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            
-            gtag('config', 'G-BYVB1ZVE6J');
-            
-        </script>
-    <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to read these docs" href="reading.html" /><link rel="prev" title="Welcome to LlamaIndex 🦙 !" href="../index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Run Case locally" href="run_case.html" /><link rel="prev" title="Configuration" href="config.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
-        <title>部署AgentVerse-IM服务</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/algolia.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>Deploying AgentVerse-IM Service - AgentVerse-IM documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -50,7 +34,7 @@
       }
     }
   }
-</style><script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="llamaindex-llamaindex" /><meta name="readthedocs-version-slug" content="stable" /></head>
+</style></head>
   <body>
     
     <script>
@@ -139,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">AgentVerse-IM Tutorial</div></a>
+      <a href="../index.html"><div class="brand">AgentVerse-IM  documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -150,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -162,50 +146,47 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">AgentVerse-IM Tutorial</span>
+  <span class="sidebar-brand-text">AgentVerse-IM  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="toctree-l1"><a class="reference internal"  href="../index.html"><strong>Home</strong></a></p>
-  <p class="caption" role="heading"><span class="caption-text">high-level 概念</span></p>
   <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">框架理念</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">沟通机制</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">代码结构</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">自定义Tool Agent</a></li>
-    <p class="caption" role="heading"><span class="caption-text">开始使用</span></p>
-  <ul>
-    <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">AgentVerse-IM安装</a></li>
-  <!-- <li class="toctree-l1"><a class="reference internal" href="getting_started/core.html">AgentVerse-IM核心思想</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="getting_started/structure.html">AgentVerse-IM代码结构</a></li> -->
-  
-  <p class="caption" role="heading"><span class="caption-text">运行 Cases</span></p>
-  <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../case/IOA.html">IOA Paper Writing</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../case/IOT_1.html">IOT Party</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../case/IOT_2.html">IOT Daily Life</a></li>
-  
-  <p class="caption" role="heading"><span class="caption-text">自定义Agent</span></p>
-  <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/agent.html">Agent</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/tool.html">Tool</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/goal.html">Goal</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../customize/docker-compose.html">docker-compose</a></li>
-  
-  <p class="caption" role="heading"><span class="caption-text">分布式服务简单配置</span></p>
-  <ul>
-  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/config.html">配置文件</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="#">部署AgentVerse-IM服务</a></li>
-  <li class="toctree-l1"><a class="reference internal" href="../distributed_service/run_case.html">本地运行Case</a></li>
-  <!-- <li class="toctree-l1 has-children"><a class="reference internal" href="use_cases/q_and_a/root.html">IOA Paper Writing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul> -->
-  <!-- <li class="toctree-l2"><a class="reference internal" href="use_cases/q_and_a/rag_cli.html">IOT Party</a></li> -->
-  </ul>
-  </li>
+<li class="toctree-l1"><a class="reference internal" href="../home.html">Welcome to AgentVerse-IM 🪐!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">HIGH-LEVEL Concepts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/framework.html">Framework Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/mechanism.html">Communication Mechanism</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/code_structure.html">Code Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../high_level_concepts/customize_tool_agent.html">Customize Tool Agent</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">AgentVerse-IM installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Run CASES</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../case/IOA.html">IOA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case/IOT_1.html">IOT Party Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case/IOT_2.html">IOT Real Device</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Customize AGENT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../customize/agent.html">Agent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize/tool.html">Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize/goal.html">Goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize/docker-compose.html">docker-compose</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Distributed Service</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Deploying AgentVerse-IM Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_case.html">Run Case locally</a></li>
+</ul>
 
 </div>
 </div>
@@ -233,66 +214,88 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <div class="section" id="installation">
-<h2>部署AgentVerse-IM服务<a class="headerlink" href="#set_server" title="Permalink to this heading">#</a></h2>
-<br>
-<ol>
-<li><p>首先进入服务器</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">ssh</span> <span class="n">username@ip_address</span>
-</pre></div>
-</div></li><br>
-<li><p>创建一个文件夹，将AgentVerse-IM clone到文件中，</p>
-
-<div class="highlight"><pre><span></span><span></span><span class="kn">cd</span> <span class="n">/data</span> 
-<span></span><span class="kn">mkdir</span> <span class="n">your_file_name</span>
-<span class="kn">cd</span> <span class="n">/data/your_file_name</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">https://github.com/AgentVerse/AgentVerse-IM.git</span>
-</pre></div></li><br>
-
-<li><p>拉取IOT case中IOT Server所需要用到的image，</p>
-<div class="highlight"><pre><span></span><span></span><span class="kn">docker</span> <span class="n">pull mlmz/iot:latest</span> 
-</pre></div></li><br>
-
-<li><p>在<code class="docutils literal notranslate">dockerfiles/compose</code>目录下的<code class="docutils literal notranslate">server.yml</code>包含了AgentVerse-IM Server和IOT Server。通过docker-compose命令在服务端启动。</p>
-<div class="highlight"><pre><span></span><span class="kn">docker-compose</span> <span class="n">-f</span> <span class="n">dockerfiles/composeserver.yml</span> <span class="n">up</span> <span class="n">--build</span>
-</pre></div></li><br>
-
-<div class="admonition tip">
-    <p class="admonition-title">Tip</p>
-    <p>如果需要想要部署其他server，可自行修改server.yml。</p>
+          <section id="deploying-agentverse-im-service">
+<h1>Deploying AgentVerse-IM Service<a class="headerlink" href="#deploying-agentverse-im-service" title="Link to this heading">#</a></h1>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
-
+<ol class="arabic">
+<li><p>First, access the server.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>username@ip_address
+</pre></div>
+</div>
+</li>
 </ol>
-
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic" start="2">
+<li><p>Create a folder and clone AgentVerse-IM into it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/data
+mkdir<span class="w"> </span>your_file_name
+<span class="nb">cd</span><span class="w"> </span>/data/your_file_name
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/AgentVerse/AgentVerse-IM.git
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic" start="3">
+<li><p>Pull the image required by the IOT Server in the IOT case.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>mlmz/iot:latest
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ol class="arabic" start="4">
+<li><p>The <code class="code docutils literal notranslate"><span class="pre">server.yml</span></code> in the <code class="code docutils literal notranslate"><span class="pre">dockerfiles/compose</span></code> 目录下的directory includes both AgentVerse-IM Server and IOT Server. Use the docker-compose command to start them on the server.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose<span class="w"> </span>-f<span class="w"> </span>dockerfiles/composeserver.yml<span class="w"> </span>up<span class="w"> </span>--build
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you need to deploy other servers, you can modify server.yml as needed.</p>
+</div>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../distributed_service/run_case.html">
+          <a class="next-page" href="run_case.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">本地运行Case</div>
+                <div class="title">Run Case locally</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../distributed_service/config.html">
+          <a class="prev-page" href="config.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">配置文件</div>
+                <div class="title">Configuration</div>
                 
               </div>
             </a>
@@ -300,7 +303,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2024, Team AgentVerse-IM
+                Copyright &#169; 2024, 2024, Team AgentVerse-IM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -314,18 +317,20 @@
         
       </footer>
     </div>
-
+    <aside class="toc-drawer">
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <div class="toc-tree-container" style="text-align:center">
+            <p>【English 🇺🇲 | <a href="../doc_zh/index_zh.html">Chinese 🇨🇳</a>】</p> <br>
+            <a href="https://github.com/OpenBMB/AgentVerse"><img alt="../_images/github_2.png" src="../_images/github_2.png" style="width: 18.0px; height: 18.0px;" /></a>
+          </div>
+        </div>
+      
+    </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/scripts/furo.js"></script>
-    <script src="../_static/js/mendablesearch.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/@docsearch/js@3.3.3/dist/umd/index.js"></script>
-    <script defer="defer" src="../_static/js/algolia.js"></script>
-    <script defer="defer" src="../_static/js/leadfeeder.js"></script>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
