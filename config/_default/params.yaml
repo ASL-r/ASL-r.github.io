@@ -5,8 +5,8 @@
 
 # Appearance
 appearance:
-  mode: system
-  color: emerald
+  mode: light
+  color: sky
 
 # SEO
 marketing:
@@ -35,12 +35,12 @@ header:
     show_search: true
     show_theme_chooser: true
     logo:
-      text: "Your Name"
+      text: "Ran Li"
 
 # Site footer
 footer:
   copyright:
-    notice: '© {year} Me. This work is licensed under {license}'
+    notice: '© {2024} Ran Li. This work is licensed under {license}'
     license:
       enable: true
       allow_derivatives: false
@@ -49,7 +49,7 @@ footer:
 
 # Localization
 locale:
-  date_format: 'Jan 2, 2006'
+  date_format: 'July , 2024'
   time_format: '3:04 PM'
 
 # Site features
@@ -58,3 +58,5 @@ features:
     enable: false
   privacy_pack:
     enable: false
+
+citation_style: MLA
