@@ -11,14 +11,14 @@ authors:
 - Ruobing Xie 
 - Zhiyuan Liu 
 - Maosong Sun
-date: "2024-07-25T00:00:00Z"
+
+date: "2024-07-10T00:00:00Z"
 # date: "2019-04-07T00:00:00Z"
-# doi: ""
+doi: ""
 
 # doi: ""
-
 # Schedule page publish date (NOT publication's date).
-publishDate: "2024-07-10T00:00:00Z"
+publishDate: "2024-07-19T00:00:00Z"
 
 # Publication type.
 # Accepts a single type but formatted as a YAML list (for Hugo requirements).
@@ -63,8 +63,8 @@ url_code: 'https://github.com/OpenBMB/IoA'
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `internal-project` references `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
-# projects:
-# - internal-project
+projects:
+- internal-project
 
 # Slides (optional).
 #   Associate this publication with Markdown slides.

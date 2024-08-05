@@ -31,6 +31,7 @@ sections:
           size: 100% 24%
           position: center top
           parallax: false
+      # spacing: "7rem"
   # - block: markdown
   #   content:
   #     title: '📚 My Research'
