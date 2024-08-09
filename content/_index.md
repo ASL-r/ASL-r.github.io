@@ -19,9 +19,9 @@ sections:
         text: Download CV
         url: uploads/resume.pdf
     design:
-      css_class: light
+      # css_class: light
       background:
-        color: white
+        # color: white
         image:
           # Add your image background to `assets/media/`.
           # filename: kobe-bryant-cool-wave-cfy6xqubat6zj8lg.jpg
